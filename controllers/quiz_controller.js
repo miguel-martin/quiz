@@ -24,11 +24,24 @@ exports.author = function(req,res){
 
 // GET /quizes
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(
-    function(quizes) {
-      res.render('quizes/index', { quizes: quizes});
-    }
-  ).catch(function(error) { next(error);})
+
+  // si no hay valor en 'search', mostrar todo... 
+  if (!req.query.search){
+      models.Quiz.findAll().then(
+        function(quizes) {
+          res.render('quizes/index', { quizes: quizes, mensaje: 'Mostrando todos los quizes'});
+        }
+      ).catch(function(error) { next(error);})
+  }
+  else{
+      var search = "%" + req.query.search + "%"
+      models.Quiz.findAll({where: ["pregunta like ?", search], order: 'pregunta ASC'}).then(
+        function(quizes) {
+          res.render('quizes/index', { quizes: quizes, mensaje: 'Mostrando resultados para "' + req.query.search + '"' });
+        }
+      ).catch(function(error) { next(error);})
+  }
+
 };
 
 // GET /quizes/:id
