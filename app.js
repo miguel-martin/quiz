@@ -37,6 +37,19 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+// Auto logout
+app.use(function(req, res, next) {
+ if (req.session.user) {
+     if (Date.now() - req.session.user.lastRequestTime > 2*60*1000) {
+         delete req.session.user;
+     } 
+     else {
+         req.session.user.lastRequestTime = Date.now();
+     }
+ }
+ next();
+});
+
 // Helpers dinamicos:
 app.use(function(req, res, next) {
 
