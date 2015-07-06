@@ -4,6 +4,7 @@ var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
 
+var sessionController = require('../controllers/session_controller');
 
 /* Página de entrada (home page) */
 router.get('/', function(req, res) {
@@ -14,6 +15,14 @@ router.get('/', function(req, res) {
 // Filosofía DRY (don't repeat yourself): hacer todo lo común en el .load y después lo específico en cada función específica
 // Esta línea quiere decir que si existe el parámetro quizId en la ruta, invoque el autoload...
 router.param('quizId', quizController.load);  // autoload :quizId
+
+
+// Definición de rutas de sesion
+router.get('/login',  sessionController.new);     // formulario login
+router.post('/login', sessionController.create);  // crear sesión
+router.get('/logout', sessionController.destroy); // destruir sesión
+
+
 
 // Definición de rutas ...
 router.get('/author',			   quizController.author);
