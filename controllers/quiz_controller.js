@@ -28,7 +28,7 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /author
 exports.author = function(req,res){
-   res.render('author', {nombre: 'Miguel Martín', foto: '/images/foto-perfil.jpg'});
+   res.render('author', {nombre: 'Miguel Martín', foto: '/images/foto-perfil.jpg', errors:[] });
 }
 
 // GET /quizes
